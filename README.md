@@ -4,7 +4,7 @@ Public MVP of Raven, a general-purpose voice-enabled AI companion. **RAVEN = Rea
 
 The ultimate goal of RAVEN is to be an AI information companion, like Cortana from HALO or any number of other fictional AI companions. The idea is to create an autonomous artificial cognitive entity by the following stages:
 
-1. **Earn user trust through data privacy, security, reliability, and utility.** RAVEN should be trustworthy in every sense of the word.
+1. **Earn user trust through data privacy, security, transparency, reliability, and utility.** RAVEN should be trustworthy in every sense of the word.
 2. **Demonstrate ability to self-monitor, self-check, and self-correct.** That is to say that RAVEN should be able to detect when it has made mistakes and rectify them in the future.
 3. Having earned your trust, **RAVEN should eventually be granted some autonomy.** That is, RAVEN should it prove to be safe and trustworthy, RAVEN ought to be granted more control over decisions about what it does on its own, and what it does for you. For instance, if after many years of use and reliable advice, perhaps you may choose to delegate managing of your finances to RAVEN through extensibility modules.
 
@@ -12,6 +12,7 @@ The ultimate goal of RAVEN is to be an AI information companion, like Cortana fr
 
 1. Voice-enabled with Google TTS and ASR.
 2. Multiple domains and topics. Can serve as tutor, life coach, etc.
+3. Transparency. All input/output and thoughts of RAVEN will be recorded in plain English for accountability and explanability.
 
 ## Setup
 
@@ -23,6 +24,7 @@ The ultimate goal of RAVEN is to be an AI information companion, like Cortana fr
 6. Install pipwin with `pip install pipwin` in an ADMIN prompt
 7. Install pyaudio with `pipwin install pyaudio` in the same ADMIN prompt
 8. Install REQUIREMENTS.TXT with `pip install -r REQUIREMENTS.txt`
+9. Create two folders called `memories` and `gpt3_logs` in this directory
 
 ## Google Cloud Services
 
