@@ -15,6 +15,8 @@ import vlc
 #RATE = 16000
 RATE = 32000
 CHUNK = int(RATE / 10)  # 100ms
+
+
 with open('openaiapikey.txt', 'r') as infile:
     open_ai_api_key = infile.read()
 openai.api_key = open_ai_api_key
@@ -30,11 +32,11 @@ def save_memory(content, label):  # label is input or output
     with open(filename, 'w', encoding='utf-8') as outfile:
         outfile.write(content)
 
-#def gpt3_completion(prompt, engine='text-davinci-002', temp=1.0, top_p=1.0, tokens=250, freq_pen=1.0, pres_pen=1.0, stop=['User:','EVE:']):
-#def gpt3_completion(prompt, engine='curie:ft-david-shapiro:eve-2022-03-24-23-57-57', temp=1.0, top_p=1.0, tokens=250, freq_pen=0.0, pres_pen=0.0, stop=['User:','EVE:']):
-def gpt3_completion(prompt, engine='davinci:ft-david-shapiro:eve-2022-03-25-13-12-25', temp=0.7, top_p=1.0, tokens=250, freq_pen=0.0, pres_pen=0.0, stop=['User:','EVE:']):
+
+def gpt3_completion(prompt, engine='davinci:ft-david-shapiro:eve-2022-03-25-13-12-25', temp=0.7, top_p=1.0, tokens=250, freq_pen=0.0, pres_pen=0.0, stop=['USER:','RAVEN:']):
     max_retry = 5
     retry = 0
+    prompt = prompt.encode(encoding='ASCII',errors='ignore').decode()
     while True:
         try:
             response = openai.Completion.create(
@@ -50,7 +52,7 @@ def gpt3_completion(prompt, engine='davinci:ft-david-shapiro:eve-2022-03-25-13-1
             text = response['choices'][0]['text'].strip()
             filename = '%s_gpt3.txt' % time()
             with open('gpt3_logs/%s' % filename, 'w') as outfile:
-                outfile.write('PROMPT:\n\n' + prompt + '\n\n==========\n\nRESPONSE:\n\n' + text)
+                outfile.write(prompt + '\n\n================\n\n' + text)
             return text
         except Exception as oops:
             retry += 1
@@ -146,16 +148,18 @@ def asr_thread():
 
 
 def tts(tts_client, words, runasync=False):
-    print('EVE:', words)
+    print('RAVEN:', words)
     synthesis_input = texttospeech.SynthesisInput(text=words)
-    #voice_name = 'en-GB-Wavenet-A' # A, C, D, F
-    voice_name = 'en-US-Wavenet-F' # C, E, F, H, G
+    #voice_name = 'en-GB-Wavenet-A' # british female? A, C, D, F
+    voice_name = 'en-GB-Wavenet-B' # british male? B, E
+    #voice_name = 'en-US-Wavenet-F' # american female? C, E, F, H, G
+    #voice_name = 'en-US-Wavenet-D' # american male
     voice = texttospeech.VoiceSelectionParams(name=voice_name, language_code="en-GB")
     audio_config = texttospeech.AudioConfig(audio_encoding=texttospeech.AudioEncoding.MP3, speaking_rate=0.95, pitch=-1.5)
     response = tts_client.synthesize_speech(input=synthesis_input, voice=voice, audio_config=audio_config)
     with open("output.mp3", "wb") as out:
         out.write(response.audio_content)
-    save_memory('EVE: %s' % words, 'output')
+    save_memory('RAVEN: %s' % words, 'output')
     player = vlc.MediaPlayer("output.mp3")
     player.play()
     if not runasync:
@@ -168,43 +172,32 @@ def tts(tts_client, words, runasync=False):
 
 
 def end_convo(user_speech):
-    exit_phrases = ["goodbye", "that's all for now", "i'm done", "exit", "later eve", "bye eve"]
+    exit_phrases = ["goodbye", "that's all for now", "i'm done", "exit", "later raven", "bye raven"]
     for i in exit_phrases:
         if i in user_speech.lower():
             return True
     return False
 
 
-def generate_response(convo, prompt_file):
-    prompt = open_file(prompt_file)
-    convo_text = ''
-    for i in convo:
-        convo_text += i + '\n'
-    convo_text = convo_text.strip()
-    prompt = prompt.replace('<<CONVO>>', convo_text)
-    return gpt3_completion(prompt)
-
-
 def finetune_response(convo):
     convo_text = ''
     for i in convo:
         convo_text += i + '\n'
-    convo_text = convo_text + 'EVE:'
+    convo_text = convo_text + 'RAVEN:'
     return gpt3_completion(convo_text)
 
 
 def warmup():
     while True:
         try:
-            test = gpt3_completion("User: EVE, are you awake?\nEVE:")
+            test = gpt3_completion("User: RAVEN, are you awake?\nRAVEN:")
             if not test:
                 continue
-            print("EVE is fully online")
+            print("RAVEN is fully online")
             return
         except Exception as oops:
             print(oops)
             sleep(5)
-    
 
 
 if __name__ == "__main__":
@@ -215,26 +208,19 @@ if __name__ == "__main__":
     greeting = 'I am now fully online. How can I help?'
     farewell = 'Goodbye for now.'
     tts(tts_client, 'Starting up...', True)
-    convo.append('EVE: Starting up...')
+    convo.append('RAVEN: Starting up...')
     warmup()
     tts(tts_client, greeting)
-    convo.append('EVE: %s' % greeting)
-    #ticktock = 1
+    convo.append('RAVEN: %s' % greeting)
     while True:
         user_speech = asr_thread()               # listen until speech
-        print(user_speech)                       # print out the words
+        print(user_speech)                       # print out the words heard
         convo.append(user_speech)                # attach user input to the convo
-        if end_convo(user_speech):
-            tts(tts_client, farewell)
-            exit(0)
-        #if ticktock > 0:
-        #    response = generate_response(convo, 'eve_ask.txt')
-        #else:
-        #    response = generate_response(convo, 'eve_idea.txt')
-        #response = generate_response(convo, 'eve_prompt.txt')
-        response = finetune_response(convo)
-        convo.append('EVE: %s' % response)
-        tts(tts_client, response)
-        #ticktock *= -1
-        if len(convo) >= 20:
-            a = convo.pop(0)
+        if end_convo(user_speech):               # check if user is disengaging
+            tts(tts_client, farewell)            # say goodbye
+            exit(0)                              # exit program
+        response = finetune_response(convo)      # otherwise, generate an output
+        convo.append('RAVEN: %s' % response)     # append Raven's response
+        tts(tts_client, response)                # say the response
+        if len(convo) >= 40:                     # if the convo is getting long
+            a = convo.pop(0)                     # remove the oldest messages from the convo
