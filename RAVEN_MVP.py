@@ -128,7 +128,7 @@ def listen_loop(responses):
         if not result.is_final:
             a = 0
         else:
-            transcript = 'User: %s' % transcript
+            transcript = 'USER: %s' % transcript
             save_memory(transcript, 'input')
             num_chars_printed = 0
             return transcript
@@ -190,7 +190,7 @@ def finetune_response(convo):
 def warmup():
     while True:
         try:
-            test = gpt3_completion("User: RAVEN, are you awake?\nRAVEN:")
+            test = gpt3_completion("USER: RAVEN, are you awake?\nRAVEN:")
             if not test:
                 continue
             print("RAVEN is fully online")

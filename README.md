@@ -1,10 +1,12 @@
 # RAVEN_MVP_Public
 
-Public MVP of Raven, a general-purpose voice-enabled AI companion
+Public MVP of Raven, a general-purpose voice-enabled AI companion. **RAVEN = Realtime Assistant Vastly Extensible Network**. The MVP is not extensible, it is just a proof of concept. Extensibility is coming.
 
-RAVEN = Realtime Assistant Vastly Extensible Network
+The ultimate goal of RAVEN is to be an AI information companion, like Cortana from HALO or any number of other fictional AI companions. The idea is to create an autonomous artificial cognitive entity by the following stages:
 
-The MVP is not extensible, it is just a proof of concept. Extensibility is coming. 
+1. **Earn user trust through data privacy, security, reliability, and utility.** RAVEN should be trustworthy in every sense of the word.
+2. **Demonstrate ability to self-monitor, self-check, and self-correct.** That is to say that RAVEN should be able to detect when it has made mistakes and rectify them in the future.
+3. Having earned your trust, **RAVEN should eventually be granted some autonomy.** That is, RAVEN should it prove to be safe and trustworthy, RAVEN ought to be granted more control over decisions about what it does on its own, and what it does for you. For instance, if after many years of use and reliable advice, perhaps you may choose to delegate managing of your finances to RAVEN through extensibility modules.
 
 ## Features
 
@@ -42,4 +44,14 @@ educational/tutor chatbot. In all cases, the conversations were centered around 
 2. Increase prosperity of the user. To 'prosper' means to 'live well', which RAVEN will support by helping the user to navigate relationships, life, and work.
 3. Increase understanding of the user. To understand is to learn, which RAVEN supports by being eager and willing to teach anything.
 
-Later versions of RAVEN will explicitly adhere to these three *core objective functions* (or *heuristic imperatives*) by thinking about them in the background. 
+Later versions of RAVEN will explicitly adhere to these three *core objective functions* (or *heuristic imperatives*) by thinking about them in the background. This version is little more than a voice-enabled finetuned chatbot. Future versions will be fully fledged cognitive architectures based upon my work in Natural Language Cognitive Architecture. Essentially, RAVEN will "think" about you, how to help you, and what you need. Furthermore, RAVEN will have long-term memory as well as extensibility so that it can access external data and services via API.
+
+## Notes on the Cognitive Architecture and future iterations of RAVEN
+
+There are many problems to solve before RAVEN is fully realized. Overall, I have provided an outline of the cognitive architecture in my book "Natural Language Cognitive Architecture" although as technology advances, there are already some deviations. However, the overall idea of dual-nested loops remains constant. My GitHub account is littered with experiments that each have to do with various aspects of artificial cognition, such as long term memory, answering questions, and so on. Each of these components will ultimately be integrated into a single, coherent platform.
+
+Below is a non-exhaustive list of artificial cognition problems that I am working on:
+
+1. **Cognitive control.** How to keep RAVEN on task, task switch appropriately, design cognitive tasks for itself, and measure progress towards task success
+2. **Model of self and abilities.** How does RAVEN know what it is? How does RAVEN know what it is capable of and what its limitations are?
+3. **Self-monitoring, self-checking, and self-correction.** What principles does RAVEN adhere to, and how does RAVEN observe itself to ensure it aligns with those principles? What mechanisms does RAVEN have for self-improvement?
